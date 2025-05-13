@@ -1,63 +1,67 @@
 #include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+ 
 using namespace std;
+using namespace __gnu_pbds;
+ 
+#define _ ios_base::sync_with_stdio(false); cin.tie(0);
+#define rep(i,a,b) for(int i = a; i <= b; i++)
+#define f first
+#define s second
+#define pb push_back
+#define MAXN 200010
+ 
+typedef long long ll;
+typedef pair<int, int> ii;
+typedef vector<int> vi;
+typedef vector<vector<int>> vvi;
+ 
+template <class T>
+using Tree = tree<T, null_type, less<T>, rb_tree_tag, tree_order_statistics_node_update>;
+ 
+const int INF = 0x3f3f3f3f;
+const ll LINF = 0x3f3f3f3f3f3f3f3fll;
+ 
+vi bellman_ford(int V, int src, vvi edges){
+	vi dist(V+1, INF);
+	dist[src] = 0;
 
+	for(int i = 0; i < V-1; i++){
+		for(auto edge : edges){
+			int u = edge[0];
+			int v = edge[1];
+			int wt = edge[2];
+			if(dist[u] != INF && dist[v] > dist[u] + wt) 
+				dist[v] = dist[u] + wt;
+		}
+	}
+
+	for(auto edge : edges){
+		int u = edge[0];
+		int v = edge[1];
+		int wt = edge[2];
+		if(dist[u] != INF && dist[v] > dist[u] + wt){
+			cout << "Negative cycle";
+		}
+	}
+
+	// pra saber quais nós então no ciclo negativo: vc bota uma queue puxando os nós que (dist[v] > dist[u] + wt)
+	// e depois vai fazendo tipo uma bfs com um vector<bool> guardando quem está em algum ciclo negativo
+
+	return dist;
+}
+ 
+void solve() {
+	int n;
+	cin >> n;
+}
+ 
+ 
 int main() {
-	int n, m, q, s;
-	cin >> n >> m >> q >> s;
-
-	while (!(n == 0 && m == 0 && q == 0 && s == 0)) {
-		vector<vector<pair<int, int>>> adj(n);
-		for (int i = 0; i < m; i++) {
-			int u, v, w;
-			cin >> u >> v >> w;
-			adj[u].emplace_back(v, w);
-		}
-
-		vector<int> dist(n, INT32_MAX);
-		dist[s] = 0;
-
-		for (int i = 0; i < n - 1; i++) {
-			for (int u = 0; u < n; u++) {
-				if (dist[u] == INT32_MAX) { continue; }
-				for (auto &[v, w] : adj[u]) { dist[v] = min(dist[v], dist[u] + w); }
-			}
-		}
-
-		queue<int> bfs_queue;
-
-		// one more iteration to detect negative cycles on graph
-		for (int u = 0; u < n; u++) {
-			if (dist[u] == INT32_MAX) { continue; }
-			for (auto &[v, w] : adj[u]) {
-				// the relaxed vertices belong to a negative cycle
-				if (dist[u] + w < dist[v]) { bfs_queue.push(v); }
-			}
-		}
-
-		vector<bool> is_negative_inf(n, false);
-
-		while (!bfs_queue.empty()) {
-			int u = bfs_queue.front();
-			bfs_queue.pop();
-			is_negative_inf[u] = true;
-			for (auto &[v, w] : adj[u]) {
-				if (is_negative_inf[v]) { continue; }
-				bfs_queue.push(v);
-			}
-		}
-
-		for (int i = 0; i < q; i++) {
-			int target;
-			cin >> target;
-			if (is_negative_inf[target]) {
-				cout << "-Infinity" << '\n';
-			} else if (dist[target] == INT32_MAX) {
-				cout << "Impossible" << '\n';
-			} else {
-				cout << dist[target] << '\n';
-			}
-		}
-
-		cin >> n >> m >> q >> s;
+	_
+	ll t=1;
+	//cin >> t;
+	while (t--) {
+		solve();
 	}
 }
